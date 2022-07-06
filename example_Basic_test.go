@@ -15,6 +15,7 @@ var nc *nats.Conn
 func init() {
 	// nc, _ = nats.Connect(nats.DefaultURL)
 	nc, _ = nats.Connect("nats://127.0.0.1:4223")
+	// nc, _ = nats.Connect("nats://81.69.184.249:24222")
 
 	//下面只需要调用一个就行了
 	// nc.Close()
@@ -94,7 +95,7 @@ func Test_ChanSubscribe(t *testing.T) {
 func Test_Request(t *testing.T) {
 	//模拟发送数据
 	go func() {
-		msg, _ := nc.Request("help", []byte("help me"), 10*time.Millisecond)
+		msg, _ := nc.Request("help", []byte("help me"), 100*time.Millisecond)
 		fmt.Printf("Received a message2: %s\n", string(msg.Data))
 	}()
 	//接收数据并返回
