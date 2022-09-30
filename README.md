@@ -29,9 +29,7 @@ go mod tidy
 
 ## reference
 
-https://docs.nats.io/
 
-https://github.com/nats-io/nats.go
 
 https://pkg.go.dev/github.com/nats-io/nats.go
 

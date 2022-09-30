@@ -13,8 +13,12 @@ var nc *nats.Conn
 
 //初始化连接
 func init() {
-	// nc, _ = nats.Connect(nats.DefaultURL)
-	nc, _ = nats.Connect("nats://127.0.0.1:4223")
+	nc, _ = nats.Connect(nats.DefaultURL)
+	// ncTmp, err := nats.Connect("nats://127.0.0.1:4222")
+	// if err != nil {
+	// 	log.Fatal(err)
+	// }
+	// nc = ncTmp
 	// nc, _ = nats.Connect("nats://81.69.184.249:24222")
 
 	//下面只需要调用一个就行了
