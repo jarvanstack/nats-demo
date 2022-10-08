@@ -69,17 +69,18 @@ func Test_SyncSubscriber(t *testing.T) {
 // 队列 模式， 队列为queue, test2 发向所有队列， 只是只是订阅的代码不同而已
 //队列模式只有一个接收者能成功接收,用于消息队列, pub,sub 用于广播
 func Test_QueueSubscribe(t *testing.T) {
-	//接收数据
-	//queue是队列组的名称
+	// queue 是队列组的名称, 同一组队列最多只有一个接收者能成功接收
 	_, _ = nc.QueueSubscribe("foo", "queue", func(msg *nats.Msg) {
 		fmt.Printf("Queue a message: %s\n", string(msg.Data))
 	})
-	//模拟发送数据
+
+	// 模拟发送数据
 	go func() {
 		nc.Publish("foo", []byte("hello  nats"))
 	}()
-	//防止进程退出收不到消息
-	time.Sleep(time.Millisecond * 100)
+
+	// 防止进程退出收不到消息
+	select {}
 }
 
 //订阅发布模式, 使用管道接收
@@ -100,11 +101,11 @@ func Test_Request(t *testing.T) {
 	//模拟发送数据
 	go func() {
 		msg, _ := nc.Request("help", []byte("help me"), 100*time.Millisecond)
-		fmt.Printf("Received a message2: %s\n", string(msg.Data))
+		fmt.Printf("收到回复: %s\n", string(msg.Data))
 	}()
 	//接收数据并返回
 	nc.Subscribe("help", func(m *nats.Msg) {
-		fmt.Printf("Received a message1: %s\n", string(m.Data))
+		fmt.Printf("接受消息: %s\n", string(m.Data))
 		nc.Publish(m.Reply, []byte("I can help!"))
 	})
 	//防止进程退出收不到消息
